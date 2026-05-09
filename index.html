@@ -21,8 +21,8 @@
 
 body {
 font-family: ‘Jost’, sans-serif;
-background: var(–cream);
-color: var(–dark);
+background: #FAF6F0;
+color: #1A1410;
 min-height: 100vh;
 display: flex;
 align-items: center;
@@ -36,7 +36,7 @@ content: ‘’;
 position: fixed;
 top: -200px; right: -200px;
 width: 600px; height: 600px;
-background: radial-gradient(circle, var(–rose-pale) 0%, transparent 70%);
+background: radial-gradient(circle, #F5E8DF 0%, transparent 70%);
 pointer-events: none;
 z-index: 0;
 }
@@ -79,7 +79,7 @@ font-weight: 300;
 font-size: 11px;
 letter-spacing: 3px;
 text-transform: uppercase;
-color: var(–rose);
+color: #C4856A;
 margin-bottom: 20px;
 }
 
@@ -89,18 +89,18 @@ font-size: clamp(2rem, 5vw, 2.8rem);
 font-weight: 300;
 line-height: 1.2;
 margin-bottom: 16px;
-color: var(–dark);
+color: #1A1410;
 }
 
 h1 em {
 font-style: italic;
-color: var(–rose);
+color: #C4856A;
 }
 
 .intro-sub {
 font-size: 15px;
 font-weight: 300;
-color: var(–text-muted);
+color: #7A6B5D;
 line-height: 1.7;
 margin-bottom: 36px;
 }
@@ -123,19 +123,19 @@ gap: 4px;
 font-family: ‘Cormorant Garamond’, serif;
 font-size: 28px;
 font-weight: 300;
-color: var(–rose);
+color: #C4856A;
 }
 
 .meta-label {
 font-size: 11px;
 letter-spacing: 1px;
-color: var(–text-muted);
+color: #7A6B5D;
 font-weight: 300;
 }
 
 .btn-primary {
 display: inline-block;
-background: var(–dark);
+background: #1A1410;
 color: white;
 font-family: ‘Jost’, sans-serif;
 font-size: 13px;
@@ -153,7 +153,7 @@ pointer-events: all !important;
 }
 
 .btn-primary:hover {
-background: var(–rose);
+background: #C4856A;
 transform: translateY(-2px);
 box-shadow: 0 8px 30px rgba(196,133,106,0.35);
 }
@@ -167,7 +167,7 @@ box-shadow: 0 8px 60px rgba(26,20,16,0.08);
 
 .progress-bar-wrap {
 height: 2px;
-background: var(–rose-pale);
+background: #F5E8DF;
 border-radius: 2px;
 margin-bottom: 36px;
 overflow: hidden;
@@ -175,7 +175,7 @@ overflow: hidden;
 
 .progress-bar-fill {
 height: 100%;
-background: var(–rose);
+background: #C4856A;
 border-radius: 2px;
 transition: width 0.5s ease;
 }
@@ -183,7 +183,7 @@ transition: width 0.5s ease;
 .q-counter {
 font-size: 11px;
 letter-spacing: 2px;
-color: var(–text-muted);
+color: #7A6B5D;
 font-weight: 300;
 text-transform: uppercase;
 margin-bottom: 16px;
@@ -195,7 +195,7 @@ font-size: clamp(1.4rem, 4vw, 1.9rem);
 font-weight: 300;
 line-height: 1.35;
 margin-bottom: 32px;
-color: var(–dark);
+color: #1A1410;
 }
 
 .options {
@@ -215,7 +215,7 @@ cursor: pointer;
 transition: all 0.25s ease;
 font-size: 14px;
 font-weight: 300;
-color: var(–dark);
+color: #1A1410;
 background: transparent;
 text-align: left;
 width: 100%;
@@ -223,14 +223,14 @@ font-family: ‘Jost’, sans-serif;
 }
 
 .option:hover {
-border-color: var(–rose-light);
-background: var(–rose-pale);
+border-color: #E8C4B2;
+background: #F5E8DF;
 }
 
 .option.selected {
-border-color: var(–rose);
-background: var(–rose-pale);
-color: var(–dark);
+border-color: #C4856A;
+background: #F5E8DF;
+color: #1A1410;
 }
 
 .option-dot {
@@ -243,8 +243,8 @@ display: flex; align-items: center; justify-content: center;
 }
 
 .option.selected .option-dot {
-background: var(–rose);
-border-color: var(–rose);
+background: #C4856A;
+border-color: #C4856A;
 }
 
 .option.selected .option-dot::after {
@@ -266,7 +266,7 @@ font-family: ‘Jost’, sans-serif;
 font-size: 12px;
 letter-spacing: 1.5px;
 text-transform: uppercase;
-color: var(–text-muted);
+color: #7A6B5D;
 background: none;
 border: none;
 cursor: pointer;
@@ -274,7 +274,7 @@ padding: 8px 0;
 transition: color 0.2s;
 }
 
-.btn-back:hover { color: var(–dark); }
+.btn-back:hover { color: #1A1410; }
 .btn-back:disabled { opacity: 0.3; cursor: default; }
 
 .btn-next {
@@ -282,7 +282,7 @@ font-family: ‘Jost’, sans-serif;
 font-size: 12px;
 letter-spacing: 2px;
 text-transform: uppercase;
-background: var(–dark);
+background: #1A1410;
 color: white;
 border: none;
 padding: 14px 36px;
@@ -299,7 +299,7 @@ pointer-events: all;
 }
 
 .btn-next.enabled:hover {
-background: var(–rose);
+background: #C4856A;
 transform: translateY(-1px);
 box-shadow: 0 6px 20px rgba(196,133,106,0.3);
 }
@@ -331,7 +331,7 @@ display: block;
 font-size: 10px;
 letter-spacing: 3px;
 text-transform: uppercase;
-color: var(–text-muted);
+color: #7A6B5D;
 margin-bottom: 12px;
 font-weight: 400;
 }
@@ -341,7 +341,7 @@ font-family: ‘Cormorant Garamond’, serif;
 font-size: clamp(1.6rem, 5vw, 2.2rem);
 font-weight: 400;
 line-height: 1.25;
-color: var(–dark);
+color: #1A1410;
 margin-bottom: 0;
 }
 
@@ -358,7 +358,7 @@ margin-bottom: 32px;
 }
 
 .result-recs {
-background: var(–rose-pale);
+background: #F5E8DF;
 border-radius: 16px;
 padding: 24px 28px;
 margin-bottom: 32px;
@@ -368,7 +368,7 @@ margin-bottom: 32px;
 font-size: 10px;
 letter-spacing: 2.5px;
 text-transform: uppercase;
-color: var(–rose);
+color: #C4856A;
 margin-bottom: 14px;
 font-weight: 500;
 }
@@ -383,7 +383,7 @@ gap: 10px;
 .result-recs li {
 font-size: 14px;
 font-weight: 300;
-color: var(–dark);
+color: #1A1410;
 padding-left: 20px;
 position: relative;
 line-height: 1.5;
@@ -393,7 +393,7 @@ line-height: 1.5;
 content: ‘—’;
 position: absolute;
 left: 0;
-color: var(–rose);
+color: #C4856A;
 }
 
 .cta-block {
@@ -405,14 +405,14 @@ font-family: ‘Cormorant Garamond’, serif;
 font-size: 1.2rem;
 font-weight: 300;
 font-style: italic;
-color: var(–text-muted);
+color: #7A6B5D;
 margin-bottom: 20px;
 line-height: 1.5;
 }
 
 .btn-cta {
 display: inline-block;
-background: var(–rose);
+background: #C4856A;
 color: white;
 font-family: ‘Jost’, sans-serif;
 font-size: 12px;
@@ -427,7 +427,7 @@ margin-bottom: 16px;
 }
 
 .btn-cta:hover {
-background: var(–dark);
+background: #1A1410;
 transform: translateY(-2px);
 box-shadow: 0 8px 30px rgba(26,20,16,0.2);
 }
@@ -437,7 +437,7 @@ display: block;
 font-size: 11px;
 letter-spacing: 1.5px;
 text-transform: uppercase;
-color: var(–text-muted);
+color: #7A6B5D;
 background: none;
 border: none;
 cursor: pointer;
@@ -446,19 +446,19 @@ font-family: ‘Jost’, sans-serif;
 transition: color 0.2s;
 }
 
-.btn-restart:hover { color: var(–dark); }
+.btn-restart:hover { color: #1A1410; }
 
 .author-tag {
 text-align: center;
 margin-top: 24px;
 font-size: 12px;
-color: var(–text-muted);
+color: #7A6B5D;
 font-weight: 300;
 letter-spacing: 0.5px;
 }
 
 .author-tag strong {
-color: var(–rose);
+color: #C4856A;
 font-weight: 400;
 }
 
