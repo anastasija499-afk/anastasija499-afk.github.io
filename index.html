@@ -145,9 +145,11 @@ text-transform: uppercase;
 padding: 18px 48px;
 border-radius: 60px;
 border: none;
-cursor: pointer;
+cursor: pointer !important;
 transition: all 0.3s ease;
 text-decoration: none;
+opacity: 1 !important;
+pointer-events: all !important;
 }
 
 .btn-primary:hover {
@@ -671,16 +673,16 @@ function startQuiz() {
 
 function renderQuestion() {
   const q = questions[current];
-  document.getElementById('q-counter').textContent = Jautājums ${current + 1} no ${questions.length};
+  document.getElementById('q-counter').textContent = `Jautājums ${current + 1} no ${questions.length}`;
   document.getElementById('q-text').textContent = q.text;
-  document.getElementById('progress-fill').style.width = ${(current / questions.length) * 100}%;
+  document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
 
   const container = document.getElementById('options-container');
   container.innerHTML = '';
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option' + (answers[current] === i ? ' selected' : '');
-    btn.innerHTML = <span class="option-dot"></span>${opt.text};
+    btn.innerHTML = `<span class="option-dot"></span>${opt.text}`;
     btn.onclick = () => selectOption(i);
     container.appendChild(btn);
   });
