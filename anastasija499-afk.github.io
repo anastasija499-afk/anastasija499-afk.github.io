@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tests: Vai permanentais grims ir piemērots tev?</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–cream: #FAF6F0;
+–dark: #1A1410;
+–rose: #C4856A;
+–rose-light: #E8C4B2;
+–rose-pale: #F5E8DF;
+–gold: #B8956A;
+–text-muted: #7A6B5D;
+}
+
+body {
+font-family: ‘Jost’, sans-serif;
+background: var(–cream);
+color: var(–dark);
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+overflow-x: hidden;
+}
+
+body::before {
+content: ‘’;
+position: fixed;
+top: -200px; right: -200px;
+width: 600px; height: 600px;
+background: radial-gradient(circle, var(–rose-pale) 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+body::after {
+content: ‘’;
+position: fixed;
+bottom: -150px; left: -150px;
+width: 500px; height: 500px;
+background: radial-gradient(circle, #E8D5C8 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+.quiz-container {
+position: relative;
+z-index: 1;
+width: 100%;
+max-width: 620px;
+}
+
+.screen { display: none; animation: fadeUp 0.5s ease forwards; }
+.screen.active { display: block; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(24px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.intro-card {
+background: white;
+border-radius: 24px;
+padding: 52px 48px;
+box-shadow: 0 8px 60px rgba(26,20,16,0.08);
+text-align: center;
+}
+
+.eyebrow {
+font-family: ‘Jost’, sans-serif;
+font-weight: 300;
+font-size: 11px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–rose);
+margin-bottom: 20px;
+}
+
+h1 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(2rem, 5vw, 2.8rem);
+font-weight: 300;
+line-height: 1.2;
+margin-bottom: 16px;
+color: var(–dark);
+}
+
+h1 em {
+font-style: italic;
+color: var(–rose);
+}
+
+.intro-sub {
+font-size: 15px;
+font-weight: 300;
+color: var(–text-muted);
+line-height: 1.7;
+margin-bottom: 36px;
+}
+
+.intro-meta {
+display: flex;
+justify-content: center;
+gap: 32px;
+margin-bottom: 40px;
+}
+
+.meta-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+}
+
+.meta-num {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 28px;
+font-weight: 300;
+color: var(–rose);
+}
+
+.meta-label {
+font-size: 11px;
+letter-spacing: 1px;
+color: var(–text-muted);
+font-weight: 300;
+}
+
+.btn-primary {
+display: inline-block;
+background: var(–dark);
+color: white;
+font-family: ‘Jost’, sans-serif;
+font-size: 13px;
+font-weight: 400;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 18px 48px;
+border-radius: 60px;
+border: none;
+cursor: pointer;
+transition: all 0.3s ease;
+text-decoration: none;
+}
+
+.btn-primary:hover {
+background: var(–rose);
+transform: translateY(-2px);
+box-shadow: 0 8px 30px rgba(196,133,106,0.35);
+}
+
+.question-card {
+background: white;
+border-radius: 24px;
+padding: 44px 44px;
+box-shadow: 0 8px 60px rgba(26,20,16,0.08);
+}
+
+.progress-bar-wrap {
+height: 2px;
+background: var(–rose-pale);
+border-radius: 2px;
+margin-bottom: 36px;
+overflow: hidden;
+}
+
+.progress-bar-fill {
+height: 100%;
+background: var(–rose);
+border-radius: 2px;
+transition: width 0.5s ease;
+}
+
+.q-counter {
+font-size: 11px;
+letter-spacing: 2px;
+color: var(–text-muted);
+font-weight: 300;
+text-transform: uppercase;
+margin-bottom: 16px;
+}
+
+.q-text {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(1.4rem, 4vw, 1.9rem);
+font-weight: 300;
+line-height: 1.35;
+margin-bottom: 32px;
+color: var(–dark);
+}
+
+.options {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.option {
+display: flex;
+align-items: center;
+gap: 16px;
+padding: 18px 22px;
+border: 1.5px solid #EDE5DC;
+border-radius: 14px;
+cursor: pointer;
+transition: all 0.25s ease;
+font-size: 14px;
+font-weight: 300;
+color: var(–dark);
+background: transparent;
+text-align: left;
+width: 100%;
+font-family: ‘Jost’, sans-serif;
+}
+
+.option:hover {
+border-color: var(–rose-light);
+background: var(–rose-pale);
+}
+
+.option.selected {
+border-color: var(–rose);
+background: var(–rose-pale);
+color: var(–dark);
+}
+
+.option-dot {
+width: 20px; height: 20px;
+border-radius: 50%;
+border: 1.5px solid #D0C4B8;
+flex-shrink: 0;
+transition: all 0.25s ease;
+display: flex; align-items: center; justify-content: center;
+}
+
+.option.selected .option-dot {
+background: var(–rose);
+border-color: var(–rose);
+}
+
+.option.selected .option-dot::after {
+content: ‘’;
+width: 8px; height: 8px;
+border-radius: 50%;
+background: white;
+}
+
+.nav-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 32px;
+}
+
+.btn-back {
+font-family: ‘Jost’, sans-serif;
+font-size: 12px;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–text-muted);
+background: none;
+border: none;
+cursor: pointer;
+padding: 8px 0;
+transition: color 0.2s;
+}
+
+.btn-back:hover { color: var(–dark); }
+.btn-back:disabled { opacity: 0.3; cursor: default; }
+
+.btn-next {
+font-family: ‘Jost’, sans-serif;
+font-size: 12px;
+letter-spacing: 2px;
+text-transform: uppercase;
+background: var(–dark);
+color: white;
+border: none;
+padding: 14px 36px;
+border-radius: 60px;
+cursor: pointer;
+transition: all 0.25s ease;
+opacity: 0.3;
+pointer-events: none;
+}
+
+.btn-next.enabled {
+opacity: 1;
+pointer-events: all;
+}
+
+.btn-next.enabled:hover {
+background: var(–rose);
+transform: translateY(-1px);
+box-shadow: 0 6px 20px rgba(196,133,106,0.3);
+}
+
+.result-card {
+background: white;
+border-radius: 24px;
+overflow: hidden;
+box-shadow: 0 8px 60px rgba(26,20,16,0.08);
+}
+
+.result-header {
+padding: 52px 48px 40px;
+text-align: center;
+position: relative;
+}
+
+.result-header.type-a { background: linear-gradient(135deg, #FAF0EC 0%, #F5E2D5 100%); }
+.result-header.type-b { background: linear-gradient(135deg, #F0F5F0 0%, #D5EAD5 100%); }
+.result-header.type-c { background: linear-gradient(135deg, #F0EEF5 0%, #D5D0EA 100%); }
+
+.result-icon {
+font-size: 52px;
+margin-bottom: 20px;
+display: block;
+}
+
+.result-type {
+font-size: 10px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–text-muted);
+margin-bottom: 12px;
+font-weight: 400;
+}
+
+.result-title {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(1.6rem, 5vw, 2.2rem);
+font-weight: 400;
+line-height: 1.25;
+color: var(–dark);
+margin-bottom: 0;
+}
+
+.result-body {
+padding: 40px 48px 48px;
+}
+
+.result-desc {
+font-size: 15px;
+font-weight: 300;
+line-height: 1.8;
+color: #4A3D32;
+margin-bottom: 32px;
+}
+
+.result-recs {
+background: var(–rose-pale);
+border-radius: 16px;
+padding: 24px 28px;
+margin-bottom: 32px;
+}
+
+.result-recs-title {
+font-size: 10px;
+letter-spacing: 2.5px;
+text-transform: uppercase;
+color: var(–rose);
+margin-bottom: 14px;
+font-weight: 500;
+}
+
+.result-recs ul {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.result-recs li {
+font-size: 14px;
+font-weight: 300;
+color: var(–dark);
+padding-left: 20px;
+position: relative;
+line-height: 1.5;
+}
+
+.result-recs li::before {
+content: ‘—’;
+position: absolute;
+left: 0;
+color: var(–rose);
+}
+
+.cta-block {
+text-align: center;
+}
+
+.cta-text {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.2rem;
+font-weight: 300;
+font-style: italic;
+color: var(–text-muted);
+margin-bottom: 20px;
+line-height: 1.5;
+}
+
+.btn-cta {
+display: inline-block;
+background: var(–rose);
+color: white;
+font-family: ‘Jost’, sans-serif;
+font-size: 12px;
+font-weight: 500;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 18px 44px;
+border-radius: 60px;
+text-decoration: none;
+transition: all 0.3s ease;
+margin-bottom: 16px;
+}
+
+.btn-cta:hover {
+background: var(–dark);
+transform: translateY(-2px);
+box-shadow: 0 8px 30px rgba(26,20,16,0.2);
+}
+
+.btn-restart {
+display: block;
+font-size: 11px;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–text-muted);
+background: none;
+border: none;
+cursor: pointer;
+margin: 12px auto 0;
+font-family: ‘Jost’, sans-serif;
+transition: color 0.2s;
+}
+
+.btn-restart:hover { color: var(–dark); }
+
+.author-tag {
+text-align: center;
+margin-top: 24px;
+font-size: 12px;
+color: var(–text-muted);
+font-weight: 300;
+letter-spacing: 0.5px;
+}
+
+.author-tag strong {
+color: var(–rose);
+font-weight: 400;
+}
+
+@media (max-width: 500px) {
+.intro-card, .question-card { padding: 36px 28px; }
+.result-header { padding: 40px 28px 32px; }
+.result-body { padding: 32px 28px 40px; }
+.intro-meta { gap: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="quiz-container">
+
+  <!-- INTRO -->
+
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <p class="eyebrow">Tests · Permanentais grims</p>
+      <h1>Vai permanentais grims<br><em>ir piemērots tev?</em></h1>
+      <p class="intro-sub">Atbildi uz 7 īsiem jautājumiem un uzzini, kura procedūra der tieši tev — un vai esi gatava jau tagad.</p>
+      <div class="intro-meta">
+        <div class="meta-item">
+          <span class="meta-num">7</span>
+          <span class="meta-label">jautājumi</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-num">2</span>
+          <span class="meta-label">minūtes</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-num">3</span>
+          <span class="meta-label">rezultāti</span>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startQuiz()">Sākt testu</button>
+    </div>
+    <p class="author-tag">no meistares <strong>Anastasija PMU</strong></p>
+  </div>
+
+  <!-- QUESTIONS -->
+
+  <div class="screen" id="screen-questions">
+    <div class="question-card">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <p class="q-counter" id="q-counter">Jautājums 1 no 7</p>
+      <p class="q-text" id="q-text"></p>
+      <div class="options" id="options-container"></div>
+      <div class="nav-row">
+        <button class="btn-back" id="btn-back" onclick="prevQuestion()" disabled>← Atpakaļ</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Tālāk →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+
+  <div class="screen" id="screen-result">
+    <div class="result-card">
+      <div class="result-header" id="result-header">
+        <span class="result-icon" id="result-icon"></span>
+        <p class="result-type" id="result-type"></p>
+        <h2 class="result-title" id="result-title"></h2>
+      </div>
+      <div class="result-body">
+        <p class="result-desc" id="result-desc"></p>
+        <div class="result-recs">
+          <p class="result-recs-title">Ieteikumi tieši tev</p>
+          <ul id="result-recs-list"></ul>
+        </div>
+        <div class="cta-block">
+          <p class="cta-text" id="result-cta-text"></p>
+          <a href="https://wa.me/message/FTLA7LUZ7G57D1" target="_blank" class="btn-cta">Rakstīt Anastasijai WhatsApp</a>
+          <button class="btn-restart" onclick="restart()">Kārtot testu no jauna</button>
+        </div>
+      </div>
+    </div>
+    <p class="author-tag">meistare <strong>Anastasija PMU</strong></p>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Kā parasti pavadi savu rītu?",
+    options: [
+      { text: "Tērēju 30+ minūtes grimam — bez tā neiziešu ārā", score: { a: 3, b: 1, c: 0 } },
+      { text: "Cenšos iekļauties 10–15 minūtēs, bet gribētu mazāk", score: { a: 2, b: 2, c: 0 } },
+      { text: "Minimums kosmētikas — uzmetīšu zīmuli un skrienu", score: { a: 1, b: 3, c: 0 } },
+      { text: "Vispār nekrāsojos, bet gribētu vienmēr izskatīties kopta", score: { a: 1, b: 2, c: 1 } },
+    ]
+  },
+  {
+    text: "Kas tev visvairāk traucē savā izskatā šobrīd?",
+    options: [
+      { text: "Uzacis — retas, asimetriskas vai nepareizas formas", score: { a: 2, b: 1, c: 0 } },
+      { text: "Lūpas — bālas, zaudē apjomu vai neskaidrs kontūrs", score: { a: 1, b: 2, c: 0 } },
+      { text: "Acis — bez acu zīmuļa izskatās nogurusī", score: { a: 2, b: 1, c: 0 } },
+      { text: "Viss kopā — gribu vispārēju svaigumu un koptību", score: { a: 1, b: 1, c: 1 } },
+    ]
+  },
+  {
+    text: "Vai tev ir pieredze ar permanento grimu?",
+    options: [
+      { text: "Nē, domāju par to pirmo reizi", score: { a: 1, b: 2, c: 1 } },
+      { text: "Skatos citu rezultātus un ļoti gribu izmēģināt", score: { a: 2, b: 1, c: 0 } },
+      { text: "Esmu darījusi agrāk — gribu atjaunot vai labot", score: { a: 1, b: 0, c: 3 } },
+      { text: "Man ir vecs permanentais grims, ar ko neesmu apmierināta", score: { a: 0, b: 0, c: 4 } },
+    ]
+  },
+  {
+    text: "Kā tu izturi sāpīgas sajūtas?",
+    options: [
+      { text: "Viegli — esmu darījusi tetovējumus vai pīrsingu", score: { a: 3, b: 1, c: 0 } },
+      { text: "Normāli, ja ir pretsāpju līdzekļi", score: { a: 2, b: 2, c: 0 } },
+      { text: "Nedaudz baidīties, bet esmu gatava rezultāta dēļ", score: { a: 1, b: 2, c: 1 } },
+      { text: "Ļoti baidos no sāpēm — tas ir mans galvenais biedēklis", score: { a: 0, b: 1, c: 2 } },
+    ]
+  },
+  {
+    text: "Kāds stils tev ir tuvāks?",
+    options: [
+      { text: "Dabisks — gribu izskatīties skaisti bez grima", score: { a: 2, b: 2, c: 0 } },
+      { text: "Spilgts un izteiksmīgs — mīlu efektīgu tēlu", score: { a: 1, b: 3, c: 0 } },
+      { text: "Minimālistisks — mazāk, bet kvalitatīvi", score: { a: 2, b: 1, c: 0 } },
+      { text: "Man grūti izlemt — nepieciešama konsultācija", score: { a: 0, b: 0, c: 3 } },
+    ]
+  },
+  {
+    text: "Vai esi gatava nelielam dzīšanas periodam (7–14 dienas)?",
+    options: [
+      { text: "Jā, iepriekš plānošu ērtāko laiku", score: { a: 3, b: 1, c: 0 } },
+      { text: "Jā, bet gribu saprast, kā tas izskatās pa dienām", score: { a: 2, b: 2, c: 0 } },
+      { text: "Nedaudz uztraucos, gribu vairāk informācijas", score: { a: 1, b: 1, c: 2 } },
+      { text: "Tas ir viens no iemesliem, kāpēc atlieku lēmumu", score: { a: 0, b: 1, c: 3 } },
+    ]
+  },
+  {
+    text: "Kas tev ir galvenais, izvēloties meistari?",
+    options: [
+      { text: "Portfolio — skatos uz reāliem darbiem", score: { a: 2, b: 1, c: 0 } },
+      { text: "Atsauksmes un paziņu ieteikumi", score: { a: 1, b: 2, c: 0 } },
+      { text: "Personīga uzticēšanās sajūta konsultācijā", score: { a: 1, b: 1, c: 1 } },
+      { text: "Pieredze sarežģītu gadījumu labošanā", score: { a: 0, b: 0, c: 4 } },
+    ]
+  },
+];
+
+const results = {
+  a: {
+    type: "Rezultāts A",
+    headerClass: "type-a",
+    icon: "✨",
+    title: "Tu esi ideāla kandidāte permanentajam grimam",
+    desc: "Tu jau esi gatava — morāli, estētiski un praktiski. Permanentais grims kļūs par īstu atklājumu: atbrīvos rītu, uzsvers sejas vaibstus un piešķirs pārliecību visu dienu. Tavas atbildes rāda, ka tu skaidri zini, ko vēlies, un esi gatava rīkoties.",
+    recs: [
+      "Sāc ar uzacīm — tās ir sejas pamats un redzamākais rezultāts",
+      "Vai izvēlies lūpas, ja vēlies svaigumu un apjomu bez lūpu krāsas",
+      "Pierakstīties uz bezmaksas konsultāciju — apspriedīsim tavu formu un tehniku",
+    ],
+    ctaText: "Iepazīsimies! Anastasija veiks bezmaksas konsultāciju un izvēlēsies ideālo tehniku tieši tev."
+  },
+  b: {
+    type: "Rezultāts B",
+    headerClass: "type-b",
+    icon: "🌿",
+    title: "Permanentais grims tev piemērots — ar dažām niansēm",
+    desc: "Permanentais grims tev noteikti der, un rezultāts iepriecinās. Tomēr ir pāris momentu, ko vērts apspriest ar meistari pirms procedūras — ādas tips, vēlamais efekts, dzīšanas periods. Neliela sagatavošanās — un tu saņemsi tieši to, ko vēlies.",
+    recs: [
+      "Nāc uz konsultāciju — tā ir bezmaksas un nekam neuzliek saistības",
+      "Parādi atsauces, kas tev patīk — tas palīdzēs izvēlēties tehniku",
+      "Noskaidro pie meistares visas detaļas par kopšanu un termiņiem",
+    ],
+    ctaText: "Neatliec — konsultācija palīdzēs atbildēt uz visiem jautājumiem. Anastasija visu paskaidros bez spiediena."
+  },
+  c: {
+    type: "Rezultāts C",
+    headerClass: "type-c",
+    icon: "💜",
+    title: "Vispirms nepieciešama konsultācija — un tas ir pareizi",
+    desc: "Pēc tavām atbildēm redzams, ka tev ir jautājumi vai īpaši apstākļi — piemēram, nevēlams vecs permanentais grims vai neskaidrība izvēlē. Tas ir normāli. Labā ziņa: viss ir risināms. Lāzera noņemšana, korekcija vai jauna procedūra no sākuma — pēc konsultācijas tu zināsi precīzu plānu.",
+    recs: [
+      "Ja ir vecs permanentais grims — apspriedīsim lāzera noņemšanu vai pārsegšanu",
+      "Ja baidies — meistare parādīs reālas dzīšanas fotogrāfijas pa dienām",
+      "Nekāda spiediena: konsultācija palīdz pieņemt apzinātu lēmumu",
+    ],
+    ctaText: "Raksti Anastasijai — viņa atbildēs uz visiem jautājumiem, parādīs portfolio un palīdzēs saprast bez steigas."
+  }
+};
+
+let current = 0;
+let answers = Array(questions.length).fill(null);
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  void el.offsetWidth;
+}
+
+function startQuiz() {
+  current = 0;
+  answers = Array(questions.length).fill(null);
+  showScreen('screen-questions');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('q-counter').textContent = `Jautājums ${current + 1} no ${questions.length}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="option-dot"></span>${opt.text}`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  const isLast = current === questions.length - 1;
+  nextBtn.textContent = isLast ? 'Uzzināt rezultātu →' : 'Tālāk →';
+  if (answers[current] !== null) {
+    nextBtn.classList.add('enabled');
+  } else {
+    nextBtn.classList.remove('enabled');
+  }
+
+  document.getElementById('btn-back').disabled = current === 0;
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  document.querySelectorAll('.option').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.add('enabled');
+  nextBtn.textContent = current === questions.length - 1 ? 'Uzzināt rezultātu →' : 'Tālāk →';
+}
+
+function nextQuestion() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  const scores = { a: 0, b: 0, c: 0 };
+  answers.forEach((ans, qi) => {
+    if (ans === null) return;
+    const s = questions[qi].options[ans].score;
+    scores.a += s.a; scores.b += s.b; scores.c += s.c;
+  });
+
+  let type = 'a';
+  if (scores.b > scores.a && scores.b > scores.c) type = 'b';
+  if (scores.c > scores.a && scores.c > scores.b) type = 'c';
+
+  const r = results[type];
+  document.getElementById('result-header').className = 'result-header ' + r.headerClass;
+  document.getElementById('result-icon').textContent = r.icon;
+  document.getElementById('result-type').textContent = r.type;
+  document.getElementById('result-title').textContent = r.title;
+  document.getElementById('result-desc').textContent = r.desc;
+  document.getElementById('result-cta-text').textContent = r.ctaText;
+
+  const ul = document.getElementById('result-recs-list');
+  ul.innerHTML = '';
+  r.recs.forEach(rec => {
+    const li = document.createElement('li');
+    li.textContent = rec;
+    ul.appendChild(li);
+  });
+
+  document.getElementById('progress-fill').style.width = '100%';
+  showScreen('screen-result');
+}
+
+function restart() {
+  showScreen('screen-intro');
+}
+</script>
+
+</body>
+</html>
